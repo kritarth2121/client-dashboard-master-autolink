@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+
+
+
+
+{% block content %}
+    <h1 class="mb-lg-40"><U>Feed</u></h1>
+    <br>
+    <br>
+    
+
+    {% if user.is_superuser or user.is_staff %}
+    <div class="content-section" style="margin:auto;">
+        <form action="{% url 'createfeed' name%}"">
+          <label for="formGroupExampleInput2"><u><b><h2>Add Feed</h2></u></b></label><br>
+
+
+  <div class="form-group">
+
+    <textarea rows="5" class="form-control" placeholder="description" value="" name="today" /></textarea>
+<br>
+        <textarea rows="1" class="form-control" placeholder="link" value="" name="link" /></textarea>
+
+ </div>
+<div class="form-group">
+<button class="btn btn-outline-info" type="submit">Submit</button>
+</div>
+</div>
+<br>
+</form>
+    {% endif %}
+    <h2>UNSEEN({{post_unread|length}})</h2>
+    {% for post in post_unread %}
+    
+         <div class="col-xl-30 col-lg-30 col-md-30 col-sm-30 col-30">
+
+<div class="email-list">
+                        <div class="email-list-item email-list-item--unread">
+                            <div class="email-list-detail">
+                            <span class="date float-right">
+                            
+                            {% if post.link %}
+
+<span class="icon"><a href="{{post.link}}"><i class="fas fa-paperclip"></i> </a></span>
+{% endif %}
+                            {{ post.date_posted|date:"F d"}}</span>
+                                <p class="article-content">{{ post.description }}</p>
+                            
+        
+          {% if post.comments.all %}
+                           <label for="formGroupExampleInput2"><u><b>Comment</u></b></label><br>
+
+            {% for comment in post.comments.all %}
+    {{ comment.comment }}
+         
+
+
+ {% for reply in comment.replies.all %}
+      Reply:  {{ reply.comment }}
+      
+        {% endfor %}
+{% endfor %}  
+          
+
+{% endif %}
+
+        <button class="btn btn-light" type="button"  data-toggle="collapse" data-target="#collapseExample{{post.id}}" aria-expanded="false" aria-controls="collapseExample">
+     <span class="icon"><i class="fas fa-fw fa-file"></i></span>Add Comment
+</button>
+
+<div class="collapse" id="collapseExample{{post.id}}">
+
+<form action="{% url 'comment:commen' post.id%}" >
+    <textarea rows="2" id="myText" class="form-control" name="comment" placeholder="" value=""  post_id={{post.id}}/></textarea>
+  <button class="btn btn-light" >Submit</button>
+  </form>
+</div>
+</div>
+    <br>
+    </div>
+    </div>
+                        </div>    
+
+{% empty %}
+    <li><h4>NO Recent items found.</li></h4>
+    {% endfor %}
+
+
+
+<br>
+<br>
+<h2>Seen</h2>
+{% for post in posts %}
+    
+         <div class="col-xl-30 col-lg-30 col-md-30 col-sm-30 col-30">
+
+<div class="email-list">
+                        <div class="email-list-item email-list-item--unread">
+                            <div class="email-list-detail">
+                            <span class="date float-right">
+                            
+                            {% if post.link %}
+
+<span class="icon"><a href="{{post.link}}"><i class="fas fa-paperclip"></i> </a></span>
+{% endif %}
+                            {{ post.date_posted|date:"F d"}}</span>
+                                <p class="article-content">{{ post.description }}</p>
+                            
+        
+          {% if post.comments.all %}
+<div class='col-xl-8 col-lg-8 col-md-8 col-sm-9 col-10'>
+
+                           <label for="formGroupExampleInput2"><u><b>Comment</u></b></label><br>
+            {% for comment in post.comments.all %}
+    {{ comment.comment }}<br>
+     {% for reply in comment.replies.all %}
+      <b>Reply by autolink:  </b>{{ reply.comment }}
+
+    {% if user.is_superuser or user.is_staff %}
+    
+    <button  type="button"  data-toggle="collapse" style="float:right" data-target="#collapseExample1{{ reply.comment }}">
+     Add Reply
+</button>
+<div class="collapse" id="collapseExample1{{ reply.comment }}">
+
+<form action="{% url 'comment:reply' post.id comment.id %}" >
+    <textarea rows="2" id="myText" class="form-control" name="comment" placeholder="" value=""  post_id={{post.id}}/></textarea>
+  <button class="btn btn-light" >Submit</button>
+  </form>
+<br>
+         <br>
+
+</div>
+{% endif %}
+  <hr>
+
+      
+        {% endfor %}
+        <hr>
+{% endfor %}  
+          
+</div>
+{% endif %}
+
+        <button class="btn btn-light" type="button"  data-toggle="collapse" data-target="#collapseExample{{post.id}}" aria-expanded="false" aria-controls="collapseExample">
+     <span class="icon"><i class="fas fa-fw fa-file"></i></span>Add Comment
+</button>
+
+<div class="collapse" id="collapseExample{{post.id}}">
+
+<form action="{% url 'comment:commen' post.id%}" >
+    <textarea rows="2" id="myText" class="form-control" name="comment" placeholder="" value=""  post_id={{post.id}}/></textarea>
+  <button class="btn btn-light" >Submit</button>
+  </form>
+</div>
+</div>
+    <br>
+    </div>
+    </div>
+                        </div>    
+
+{% empty %}
+    <li><h4>NO Recent items found.</li></h4>
+    {% endfor %}
+<br>
+<br>
+{% if posts.has_other_pages %} 
+
+      {% if posts.has_previous %}
+        <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
+        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+      {% endif %}
+
+      {% for num in posts.paginator.page_range %}
+        {% if posts.number == num %}
+          <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+        {% elif num > posts.number|add:'-3' and num < posts.number|add:'3' %}
+          <a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+        {% endif %}
+      {% endfor %}
+
+      {% if posts.has_next %}
+        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+      {% endif %}
+
+    {% endif %}
+{% endblock %}

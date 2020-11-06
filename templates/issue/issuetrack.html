@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+
+
+
+{% block content %}
+    <h1 class="mb-3"> Issue Tracker</h1>
+     <button class="btn btn-outline-info"  type="button" >
+     <a href="{% url 'issuetrack:createissue' %}">
+     Add issue
+     </a>
+</button>
+<hr>
+    {% if user.is_superuser or user.is_staff %}
+
+<form>
+<select name="list" id="list" accesskey="target">
+    <option value='none' selected>Choose a User</option>
+    {% for post in users %}
+        <option value="{%url 'issuetrack:issuelist' post.username%}">{{post.username}}</option>
+
+    {% endfor %}
+
+</select>
+<input type=button value="Go" onclick="goToNewPage()" />
+</form>
+{% endif %}
+<script type="text/javascript">
+    function goToNewPage()
+    {
+        var url = document.getElementById('list').value;
+        if(url != 'none') {
+            window.location = url;
+        }
+    }
+</script>
+<hr>
+{% if name %}
+    <h3 class="mb-3"> For user -- {{name}}</h3>
+{% endif %}
+    <div class="content-section" >
+        
+    {% for post in posts %}
+    <br>
+        <article class="media content-section">
+          <!--img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}"-->
+          <div class="media-body">
+            <div class="article-metadata">
+            
+              <small class="text-muted">{{ post.date_posted }}</small>
+            </div>
+             <label for="formGroupExampleInput2"><u><b>Project</u></b></label><br>
+
+            <p class="article-content">{{ post.project }} </a></p>
+             <label for="formGroupExampleInput2"><u><b>Work</u></b></label><br>
+
+            <p class="article-content">{{ post.work }} </a></p>
+            <label for="formGroupExampleInput2"><u><b>Title</u></b></label><br>
+
+            <p class="article-content">{{ post.title }} </a></p>
+            <p class="article-content">{{ post.description }}</p>
+            <label for="formGroupExampleInput2"><u><b>Image</u></b></label><br>
+
+            <p class="article-content">{{ post.image }} </a></p>
+          {% if post.comment %}
+                           <label for="formGroupExampleInput2"><u><b>Autolink Reply</u></b></label><br>
+
+            <p class="article-content">{{ post.comment }} </a></p>
+          
+{% endif %}
+<small class="text-muted">{{ post.get_status_display }}</small>
+</div>
+        </article>
+       
+        
+    {% if user.is_superuser or user.is_staff %}
+<button class="btn btn-outline-info"  type="button"  >
+<a href="{% url 'issuetrack:issueclose' post.id %}">
+     
+     Close issue
+     </a>
+</button>
+        <button class="btn btn-outline-info"  type="button"  data-toggle="collapse" data-target="#collapseExample{{post.id}}" aria-expanded="false" aria-controls="collapseExample">
+     Add Reply
+</button>
+        
+<div class="collapse" id="collapseExample{{post.id}}">
+
+<form action="{% url 'issuetrack:issuecomment' post.id %}" >
+    <textarea rows="2" id="myText" class="form-control" name="comment" placeholder="" value=""  post_id={{post.id}}/></textarea>
+  <button  >Submit</button>
+  </form>
+
+</div>
+    <br>
+    {% endif %}
+{% empty %}
+    <h4>NO items found.</h4>
+    {% endfor %}
+
+<br>
+<br>
+{% if posts.has_other_pages %} 
+
+      {% if posts.has_previous %}
+        <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
+        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+      {% endif %}
+
+      {% for num in posts.paginator.page_range %}
+        {% if posts.number == num %}
+          <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+        {% elif num > posts.number|add:'-3' and num < posts.number|add:'3' %}
+          <a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+        {% endif %}
+      {% endfor %}
+
+      {% if posts.has_next %}
+        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+      {% endif %}
+
+    {% endif %}
+{% endblock %}

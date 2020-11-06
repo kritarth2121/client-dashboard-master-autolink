@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>
+Projects</h1>
+
+<form>
+<select name="list" id="list" accesskey="target">
+    <option value='none' selected>Choose a Project</option>
+    {% for post in posts %}
+        <option value="{%url 'projectall:projectdetail' post.id%}">{{post.name}}</option>
+
+    {% endfor %}
+
+</select>
+<input type=button value="Go" onclick="goToNewPage()" />
+</form>
+<hr>
+<script type="text/javascript">
+    function goToNewPage()
+    {
+        var url = document.getElementById('list').value;
+        if(url != 'none') {
+            window.location = url;
+        }
+    }
+</script>
+
+    {% for post in posts %}
+        <article class="media content-section">
+          <div class="media-body">
+            <div class="article-metadata">
+              <label for="formGroupExampleInput2"><u>Date Given</u></label>
+              <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}</small>
+            </div>
+            <label for="formGroupExampleInput2"><u><b>Project Title</u></b></label>
+            <h2><a  href="{% url 'projectall:projectdetail' post.id %}">{{ post.name }}</a></h2>
+                           <label for="formGroupExampleInput2"><u><b>Project Description</u></b></label>
+
+            <p class="article-content">{{ post.description }}</p>
+            <label for="formGroupExampleInput2"><u><b>Completion</u></b></label>
+
+            <p class="article-content">{{ post.percentage }}</p>
+            <label for="formGroupExampleInput2"><u><b>Associated with client</u></b></label><br>
+ {% for page in post.client.all %} <a  href="{% url 'profileup' page %}">{{ page}}</a>{% endfor %}<br>
+ <br>
+                         <label for="formGroupExampleInput2"><u><b>Priority</u></b></label>
+
+            <p class="article-content">{{ post.get_priority_display }}</p>
+
+           <button class="btn btn-outline-info"  type="button"  >
+<a href="{% url 'projectall:workproject' post.id %}">        
+See all the tasks associated with the Project</button></a> 
+          </div>
+        </article>
+    {% endfor %}
+    {% if is_paginated %}
+
+      {% if page_obj.has_previous %}
+        <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
+        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+      {% endif %}
+
+      {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+          <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+          <a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+        {% endif %}
+      {% endfor %}
+
+      {% if page_obj.has_next %}
+        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+      {% endif %}
+
+    {% endif %}
+{% endblock content %}

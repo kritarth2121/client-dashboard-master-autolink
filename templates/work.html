@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>
+Work</h1>
+
+<form>
+<select name="list" id="list" accesskey="target">
+    <option value='none' selected>Choose a work</option>
+    {% for post in posts %}
+        <option value="{%url 'post-detail' post.id%}">{{post.title}}</option>
+
+    {% endfor %}
+
+</select>
+<input type=button value="Go" onclick="goToNewPage()" />
+</form>
+<hr>
+<script type="text/javascript">
+    function goToNewPage()
+    {
+        var url = document.getElementById('list').value;
+        if(url != 'none') {
+            window.location = url;
+        }
+    }
+</script>
+{% for post in posts %}
+           <br>
+        <article class="media content-section">
+          <div class="media-body">
+            <div class="article-metadata">
+            <label for="formGroupExampleInput2"><u>Related to client</u></label>
+         {% for page in post.project.client.all %} <a href="{% url 'profileup' page %}">{{page}} ,</a>{% endfor %}
+            <label for="formGroupExampleInput2"><u>Assigned Employee</u></label>
+         {% for page in post.assigned_user.all %} <a href="{% url 'profileup' page %}">{{page}} ,</a>{% endfor %}
+              <label for="formGroupExampleInput2"><u>Date Given</u></label>
+              <small class="text-muted">{{ post.date_posted }}</small>
+            </div> <label for="formGroupExampleInput2"><u><b>Related to Project</u></b></label>
+
+            <p class="article-content" ><a href="{% url 'projectall:projectdetail' post.project.id %}">{{ post.project }}</a></p>
+            <label for="formGroupExampleInput2"><u><b>Work Title</u></b></label>
+                       <h2> <p class="article-content"><a href="{% url 'post-detail' post.id %}">{{ post.title }}</p></a>
+</h2>
+            <h2>{{ post.work }}</h2>
+                           <label for="formGroupExampleInput2"><u><b>Work Description</u></b></label>
+
+            <p class="article-content">{{ post.description }}</p>
+            <label for="formGroupExampleInput2"><u><b>Work Subtask</u></b></label>
+
+            <p class="article-content">{{ post.subtask }}</p>
+                                 <label for="formGroupExampleInput2"><u><b>Work Link</u></b></label>
+
+            <p class="article-content" ><a href="{{ post.link }}">{{ post.link }}</a></p>
+            <label for="formGroupExampleInput2"><u><b>Work Deadline</u></b></label>
+                        <p class="article-content">{{ post.deadline }}</p>
+                        <label for="formGroupExampleInput2"><u><b>Work Status</u></b></label>
+            <p class="article-content">{{ post.status }}</p>
+            <label for="formGroupExampleInput2"><u><b>Priority</u></b></label>
+
+            <p class="article-content">{{ post.get_priority_display }}</p>
+
+            {% if post.comments.all %}
+                           <label for="formGroupExampleInput2"><u><b>Comment</u></b></label><br>
+
+            {% for comment in post.comments.all %}
+    {{ comment.comment }}  <br>
+    <small>{{comment.user.get_full_name}} Commented This </small> <hr> 
+    {% endfor %}
+    {% endif %}
+<button class="btn btn-light" type="button"  data-toggle="collapse" data-target="#collapseExample{{post.id}}" aria-expanded="false" aria-controls="collapseExample">
+     <span class="icon"><i class="fas fa-fw fa-file"></i></span>Add Subtask
+</button>
+
+<div class="collapse" id="collapseExample{{post.id}}">
+
+<form action="{% url 'comment:commentTask' post.id%}" >
+    <textarea rows="2" id="myText" class="form-control" name="comment" placeholder="" value=""  post_id={{post.id}}/></textarea>
+  <button class="btn btn-light" >Submit</button>
+  </form>
+</div>
+  <button class="btn btn-outline-info">
+    <a href="{% url 'committouser' post.id %}">
+        Commit to user</a>
+    </button>
+        
+                 <button class="btn btn-outline-info">
+    <a href="{% url 'change' post.id %}">
+        Track changes</a>
+    </button>
+    </article>
+<button class="btn btn-light" type="button"  data-toggle="collapse" data-target="#collapseExample{{post.id}}" aria-expanded="false" aria-controls="collapseExample">
+     <span class="icon"><i class="fas fa-fw fa-file"></i></span>Add Comment
+</button>
+
+<div class="collapse" id="collapseExample{{post.id}}">
+
+<form action="{% url 'comment:commentTask' post.id%}" >
+    <textarea rows="2" id="myText" class="form-control" name="comment" placeholder="" value=""  post_id={{post.id}}/></textarea>
+  <button class="btn btn-light" >Submit</button>
+  </form>
+</div>
+  <button class="btn btn-outline-info">
+    <a href="{% url 'committouser' post.id %}">
+        Commit to user</a>
+    </button>
+        
+                 <button class="btn btn-outline-info">
+    <a href="{% url 'change' post.id %}">
+        Track changes</a>
+    </button>
+    </article>
+          
+          
+            
+
+
+    {% endfor %}
+        {% if is_paginated %}
+
+      {% if page_obj.has_previous %}
+        <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
+        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+      {% endif %}
+
+      {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+          <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+          <a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+        {% endif %}
+      {% endfor %}
+
+      {% if page_obj.has_next %}
+        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+      {% endif %}
+
+    {% endif %}
+{% endblock content %}

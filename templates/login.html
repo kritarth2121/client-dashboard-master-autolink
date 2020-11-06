@@ -1,0 +1,105 @@
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+<!doctype html>
+<html lang="en">
+ 
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Login</title>
+    <!-- Bootstrap CSS -->
+     <link rel="stylesheet" href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}">
+    <link href="{% static 'assets/vendor/fonts/circular-std/style.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'assets/libs/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/vendor/fonts/fontawesome/css/fontawesome-all.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/vendor/vector-map/jqvmap.css' %}">
+    <link href="{% static 'assets/vendor/jvectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet' %}">
+    <link rel="stylesheet" href="{% static 'assets/vendor/charts/chartist-bundle/chartist.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/vendor/charts/c3charts/c3.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/vendor/charts/morris-bundle/morris.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/vendor/daterangepicker/daterangepicker.css' %}" />
+    <style>
+    html,
+    body {
+        height: 100%;
+    }
+
+    body {
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-align: center;
+        align-items: center;
+        padding-top: 40px;
+        padding-bottom: 40px;
+    }
+    </style>
+</head>
+
+<body>
+    <!-- ============================================================== -->
+    <!-- login page  -->
+    <!-- ============================================================== -->
+    <div class="splash-container">
+        <div class="card ">
+            <div class="card-header text-center">AL-Dashboard<span class="splash-description">Please enter your user information.</span></div>
+            <div class="card-body">
+                <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Log In</legend>
+                {{ form|crispy }}
+            </fieldset>
+            
+                   
+                    <div class="form-group">
+                        <label class="custom-control custom-checkbox">
+                            <input class="custom-control-input" type="checkbox"><span class="custom-control-label">Remember Me</span>
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">Sign in</button>
+                </form>
+            </div>
+
+            </div>
+        </div>
+    </div>
+  
+    <!-- ============================================================== -->
+    <!-- end login page  -->
+    <!-- ============================================================== -->
+    <!-- Optional JavaScript -->
+    <script src="{% static 'assets/vendor/jquery/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.js' %}"></script>
+    <!-- slimscroll js -->
+    <script src="{% static 'assets/vendor/slimscroll/jquery.slimscroll.js' %}"></script>
+    <!-- chart chartist js -->
+    <script src="{% static 'assets/vendor/charts/chartist-bundle/chartist.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/charts/chartist-bundle/Chartistjs.js' %}"></script>
+    <script src="{% static 'assets/vendor/charts/chartist-bundle/chartist-plugin-threshold.js' %}"></script>
+    <!-- chart C3 js -->
+    <script src="{% static 'assets/vendor/charts/c3charts/c3.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/charts/c3charts/d3-5.4.0.min.js' %}"></script>
+    <!-- chartjs js -->
+    <script src="{% static 'assets/vendor/charts/charts-bundle/Chart.bundle.js' %}"></script>
+    <script src="{% static 'assets/vendor/charts/charts-bundle/chartjs.js' %}"></script>
+    <!-- sparkline js -->
+    <script src="{% static 'assets/vendor/charts/sparkline/jquery.sparkline.js' %}"></script>
+    <!-- dashboard finance js -->
+    <script src="{% static 'assets/libs/js/dashboard-finance.js' %}"></script>
+    <!-- main js -->
+    <script src="{% static 'assets/libs/js/main-js.js' %}"></script>
+    <!-- gauge js -->
+    <script src="{% static 'assets/vendor/gauge/gauge.min.js' %}"></script>
+    <!-- morris js -->
+    <script src="{% static 'assets/vendor/charts/morris-bundle/raphael.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/charts/morris-bundle/morris.js' %}"></script>
+    <script src="{% static 'assets/vendor/charts/morris-bundle/morrisjs.html' %}"></script>
+    <!-- daterangepicker js -->
+    <script src="{% static '../../../../cdn.jsdelivr.net/momentjs/latest/moment.min.js' %}"></script>
+    <script src="{% static '../../../../cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js' %}"></script>
+</body>
+ 
+</html>
+{% endblock content %}

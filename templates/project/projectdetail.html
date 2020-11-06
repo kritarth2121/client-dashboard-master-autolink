@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% for post in posts %}
+                <article class="media content-section">
+          <div class="media-body">
+            <div class="article-metadata">
+              <label for="formGroupExampleInput2"><u>Date Given</u></label>
+              <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}</small>
+            </div>
+            <label for="formGroupExampleInput2"><u><b>Project Title</u></b></label>
+            <h2><a  href="{% url 'projectall:projectdetail' post.id %}">{{ post.name }}</a></h2>
+                           <label for="formGroupExampleInput2"><u><b>Project Description</u></b></label>
+
+            <p class="article-content">{{ post.description }}</p>
+            
+            <label for="formGroupExampleInput2"><u><b>Associated with client</u></b></label><br>
+ {% for page in post.client.all %} <a  href="{% url 'profileup' page %}">{{ page}}</a>{% endfor %}<br>
+ <br>
+                         <label for="formGroupExampleInput2"><u><b>Priority</u></b></label>
+
+            <p class="article-content">{{ post.get_priority_display }}</p>
+
+           <button class="btn btn-outline-info"  type="button"  >
+<a href="{% url 'projectall:workproject' post.id %}">        
+See all the tasks associated with the Project</button></a> 
+          </div>
+        </article>
+ {% endfor %}
+        {% if user.is_superuser %}
+          <div>
+            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="update">Update</a>
+            <a class="btn btn-danger btn-sm mt-1 mb-1" href="delete">Delete</a>
+          </div>
+        {% endif %}
+ 
+  </article>
+{% endblock content %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

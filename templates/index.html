@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% load static %}
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" type="text/css" />
+
+{% load custom %}
+
+{% block content %}
+    <div id="content-main">
+                                  <br>
+          <br>
+          <a href="{% url 'link:linklist' name%}">
+          <button class="btn btn-outline-info" style="padding: 30px 32px;" type="submit">
+       
+<i class="fas fa-fw fa-file">
+Link        </i>
+            </button></a>
+          {% analytics %}
+    </div>
+{% endblock %}

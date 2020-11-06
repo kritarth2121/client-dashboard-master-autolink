@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="content-section">
+      <div class="media">
+        <img class="rounded-circle account-img" src="{{ user.profile.image.url }}">
+        <div class="media-body">
+          <h2 class="account-heading">{{ user.username }}</h2>
+          <p class="text-secondary">{{ user.email }}</p>
+        </div>
+      </div>
+      <!--form method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <fieldset class="form-group">
+              <legend class="border-bottom mb-4">Profile Info</legend>
+              {{ u_form|crispy }}
+              {{ p_form|crispy }}
+          </fieldset>
+          <div class="form-group">
+          </div>
+      </form-->
+      <fieldset class="form-group">
+              <legend class="border-bottom mb-4">Profile Info</legend>
+              
+
+<div id="div_id_username" class="form-group"> <label for="id_username" class=" requiredField">
+                <h4><b><u>Username</h4></b></u><span class="asteriskField"></span> </label> <div class=""> {{ user.username }}                  <br>
+                <h4><b><u>Name</h4></b></u><span class="asteriskField"></span> </label> <div class="">  <label for="formGroupExampleInput">{{ user.get_full_name }}  </label> <br>
+
+                 <label for="id_email" class=" requiredField">
+                <h4><b><u>Email</h4></b></u><span class="asteriskField"></span> </label> <div class="">  <label for="formGroupExampleInput">{{ user.email }}  </label> 
+
+              
+
+<div id="div_id_image" class="form-group"> <label for="id_image" class=" requiredField">
+               
+                <h4><b><u>Websites</h4></b></u><span class="asteriskField"></span> </label> <div class=""> <label for="formGroupExampleInput"> <p class="article-content">{{user.profile.websites }} </p></label> </div> </div>
+                <h4><b><u> Google Drive Link</h4></b></u><span class="asteriskField"></span> </label> <div class=""> <label for="formGroupExampleInput"> <p class="article-content"><a href="{{person.profile.link }}">{{person.profile.link }}</a> </p></label> </div> </div>
+
+          </fieldset>
+    </div>
+
+    {% if user.is_staff  %}
+
+     <button>
+    <a href="{% url 'profileupdate' user.username %}">
+        Update Profile</a>
+    </button>
+{% endif %}
+{% endblock content %}

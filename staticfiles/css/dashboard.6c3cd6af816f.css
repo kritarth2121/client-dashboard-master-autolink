@@ -1,0 +1,192 @@
+body{
+  background-color: #f3f2f2;
+  margin: 0;
+  font-size: 15px;
+  font-weight: lighter;
+  font-family: sans-serif;
+}
+
+
+.ui-state-hover {
+  background-color: #ffC
+}
+.inlineEdit-placeholder {
+  font-style: italic; color: #555;
+}
+
+h1{
+  font-weight: lighter;
+}
+
+.portlet {
+  margin-bottom: 1em;
+  padding: 0.3em;
+  cursor:context-menu;
+  background-color: grey;
+}
+.portlet-header {
+  padding: 0.2em 0.3em;
+  margin-bottom: 0.5em;
+  position: relative;
+}
+.portlet-toggle {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  margin-top: -8px;
+}
+.portlet-content {
+  text-align: center;
+  padding: 0.4em;
+}
+.portlet-placeholder {
+  border: 1px dotted black;
+  margin: 0 1em 1em 0;
+  height: 50px;
+}
+
+/*.input[type=text] {
+    width: 130px;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+}*/
+
+/* When the input field gets focus, change its width to 100% */
+/*input[type=text]:focus {
+    width: 140px;
+}*/
+
+a.navbutton{
+  padding: 10px;
+  text-decoration: none;
+  color: white;
+}
+
+header#nav{
+  height:40px;
+  overflow: hidden;
+  position: relative;
+  background-color: #327d6d;
+  text-align: center;
+}
+
+div#logo{
+  height: 40px;
+  line-height: 40px;
+  margin: 0 auto;
+  display: inline-block;
+}
+
+div#search{
+  height: 40px;
+  line-height: 40px;
+  padding-left: 20px;
+  float: left;
+  vertical-align: middle;
+}
+
+div#account{
+  height: 40px;
+  line-height: 40px;
+  padding-right: 20px;
+  float: right;
+  vertical-align: middle;
+  font-weight: 100;
+  color: white;
+}
+
+div.big-block{
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: .3em;
+}
+
+div.wrapper-content{
+  width: 70%;
+  float: left;
+  height: auto;
+  border: 2.5px solid #000;
+  background-color: #fff;
+  border-radius: 5px;
+  opacity: 0.8;
+  transition: opacity .3s ease-in-out;
+}
+
+div.wrapper-content:hover{
+  opacity: 1;
+}
+
+div.new_task_wrapper{
+  width: 50px;
+  float: right;
+  height: auto;
+  padding: 10px;
+  margin-left: 10px;
+  margin-bottom: 30px;
+  text-align: center;
+  cursor: crosshair;
+}
+
+div#container{
+  width: 90%;
+  padding: 10px;
+  margin: 0 auto;
+  margin-top: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  text-align: center;
+}
+
+.task_category{
+  background-color: #ccc;
+  border-radius: 8px;
+  width: 25%;
+}
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    border-radius: 20px;
+    width: 30%;
+}
+
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/*.editable.task_header{
+  background-color: red;
+}*/

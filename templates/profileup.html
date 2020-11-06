@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% for person in persons %}
+    <div class="content-section">
+      <div class="media">
+        <img class="rounded-circle account-img" src="{{ person.profile.image.url }}">
+        <div class="media-body">
+          <h2 class="account-heading">{{ person.username }}</h2>
+          <p class="text-secondary">{{ person.email }}</p>
+        </div>
+      </div>
+
+      <fieldset class="form-group">
+              <legend class="border-bottom mb-4">Profile Info</legend>
+              
+
+<div id="div_id_username" class="form-group"> <label for="id_username" class=" requiredField">
+                <h4><b><u>Username</h4></b></u><span class="asteriskField"></span> </label> <div class=""> {{ person.username }}                  <br>
+                <h4><b><u>Name</h4></b></u><span class="asteriskField"></span> </label> <div class="">  <label for="formGroupExampleInput">{{ person.get_full_name }}  </label> <br>
+
+                 <label for="id_email" class=" requiredField">
+                <h4><b><u>Email</h4></b></u><span class="asteriskField"></span> </label> <div class="">  <label for="formGroupExampleInput">{{ person.email }}  </label> 
+
+              
+
+<div id="div_id_image" class="form-group"> <label for="id_image" class=" requiredField">
+               
+                <h4><b><u>Websites</h4></b></u><span class="asteriskField"></span> </label> <div class=""> <label for="formGroupExampleInput"> <p class="article-content">{{person.profile.websites }} </p></label> </div> </div>
+                <h4><b><u> Google Drive Link</h4></b></u><span class="asteriskField"></span> </label> <div class=""> <label for="formGroupExampleInput"> <p class="article-content"><a href="{{person.profile.link }}">{{person.profile.link }}</a> </p></label> </div> </div>
+
+          </fieldset>
+    </div>
+    
+
+    <button>
+    
+    <a href="{% url 'delete-user' person.username %}">
+
+        Delete User
+        </a>
+            </button>
+
+    <button>
+    {% if person.is_staff %}
+    <a href="{% url 'work' person.username %}">
+
+        check and give work
+        </a>
+            </button>
+
+        
+{% else %}
+    <button>
+
+<a href="{% url 'analytics' person.username %}">
+
+        Check his analytics
+        </a>
+            </button>
+    <button>
+
+        <a href="{% url 'issuetrack:issuelist' person.username %}">
+
+        Resolve his issues
+        </a>
+            </button>
+                <button>
+
+        <a href="{% url 'link:linklist' person.username %}">
+
+Link        </a>
+            </button>
+
+{% endif %}
+
+    </button>
+    <button>
+    <a href="{% url 'profileupdate' person.username %}">
+        Update Profile</a>
+    </button>
+    
+    <button>
+        {% if not person.is_staff %}
+
+    <a href="{% url 'feed' person.username %}">
+        Check and update his feed
+{% endif %}
+
+    </a>
+    </button>
+    {% endfor %}
+{% endblock content %}

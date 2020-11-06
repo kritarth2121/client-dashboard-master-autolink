@@ -1,0 +1,273 @@
+
+{% load static %}
+{% block content %}
+{% load crispy_forms_tags %}
+
+<!-- TODO: add a ? icon that pops up with a list of different features and how to use them 
+    TODO: automatically accept external scripts for sortable portlets -->
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}" type="text/css"/>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+<div class='new_task_wrapper' id='new_task'>
+     <!-- The Modal -->
+ <div id="myModal" class="modal">
+   <!-- Modal content -->
+   <div class="modal-content">
+     <span class="close">&times;</span>
+     <h4>New task</h4>
+      <form action='work' method="POST" id='new_task_form'>
+      {% csrf_token %}
+      {{ form|crispy }}
+      <button type="submit">Add new task</button>
+      </form>
+   </div>
+ </div>
+</div>
+     <a href="{%url 'creatework' name%}"> <button type="submit">Add new task</button></a>
+
+<div class="container-fluid pt-3">
+    <div class="row flex-row flex-sm-nowrap py-3">
+
+<div class="col-sm-6 col-md-4 col-xl-3">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h6 class="card-title text-uppercase text-truncate py-2">Pending Start</h6>
+                    <div class="items border border-light">
+  <div class='task_category'>
+    <div class="big-block" id="pending">
+    </div>
+  </div>
+                      </div>
+                </div>
+            </div>
+        </div>
+  <div class="col-sm-6 col-md-4 col-xl-3">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h6 class="card-title text-uppercase text-truncate py-2">In Progress</h6>
+                    <div class="items border border-light">
+  <div class='task_category'>
+    <div class="big-block" id="progress">
+                       
+    </div>
+  </div>
+                      </div>
+                </div>
+            </div>
+        </div>
+  <div class="col-sm-6 col-md-4 col-xl-3">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h6 class="card-title text-uppercase text-truncate py-2">Pending for Review</h6>
+                    <div class="items border border-light">
+  <div class='task_category'>
+    <div class="big-block" id="pendingreview">
+    </div>
+  </div>
+                      </div>
+                </div>
+            </div>
+        </div>
+  <div class="col-sm-6 col-md-4 col-xl-3">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h6 class="card-title text-uppercase text-truncate py-2">Client Feedback</h6>
+                    <div class="items border border-light">
+  <div class='task_category'>
+    <div class="big-block" id="feedback">                  
+    </div>
+  </div>
+                      </div>
+                </div>
+            </div>
+        </div>
+  <div class="col-sm-6 col-md-4 col-xl-3">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h6 class="card-title text-uppercase text-truncate py-2">Completed</h6>
+                    <div class="items border border-light">
+  <div class='task_category'>
+    <div class="big-block" id="completed"> 
+    </div>
+  </div>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+<!-- JS, Popper.js, and jQuery -->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.inlineedit/jquery.inlineedit.js' %}"></script>
+<script>
+// function csrfSafeMethod(method) {
+//     // these HTTP methods do not require CSRF protection
+//     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+// }
+// $.ajaxSetup({
+//     beforeSend: function(xhr, settings) {
+//         if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+//             xhr.setRequestHeader("X-CSRFToken", csrftoken);
+//         }
+//     }
+// });
+
+
+function sortaTable() {
+
+  $( ".big-block" ).sortable({
+    connectWith: ".big-block",
+    handle: ".portlet-header",
+    cancel: ".portlet-toggle",
+    placeholder: "portlet-placeholder ui-corner-all",
+    dropOnEmpty: true,
+    stop: dropHandler,
+  });
+
+  $( ".portlet" )
+      .addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
+      .find( ".portlet-header" )
+      .addClass( "ui-widget-header ui-corner-all" )
+      .prepend( "<span class='ui-icon ui-icon-minusthick portlet-toggle'></span>");
+
+  $( ".portlet-toggle" ).on( "click", function() {
+    var icon = $( this );
+    icon.toggleClass( "ui-icon-plusthick ui-icon-minusthick" );
+    icon.closest( ".portlet" ).find( ".portlet-content" ).toggle();
+  });
+}
+
+
+var dropHandler = function(event, ui){
+  // console.log(event);
+  // console.log(event.originalEvent);
+  // console.log(event.originalEvent.target);
+  var taskID = event.originalEvent.target.parentNode.id;
+  var portletStatus = $(event.originalEvent.target.parentNode)[0].parentNode.id;
+  var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+  var data = { status: portletStatus };
+
+
+  var settings = {
+              beforeSend: function(xhr, settings) { xhr.setRequestHeader("X-CSRFToken", csrftoken); },
+              url: "/api/task/" + taskID +'/',
+              type: 'PATCH',
+              data: data
+      }
+
+  $.ajax(settings);
+  // var portletID = ($(this).parent().attr('id'));
+  // var portletStatus = ($(this).parents('.big-block').attr('id'));  // TODO: make this thing change to the other thing
+  // console.log(portletStatus);
+};
+
+function portletEdit() {
+    $('.portlet-content').dblclick(function(){
+    var portletID = ($(this).parent().attr('id'));
+    var portletStatus = ($(this).parents('.big-block').attr('id'));
+    
+    window.location = window.location.protocol+'/post/' + portletID;
+  });
+}
+function portletEdi() {
+    $('.portlet-header').dblclick(function(){
+    var portletID = ($(this).parent().attr('id'));
+    var portletStatus = ($(this).parents('.big-block').attr('id'));
+    
+    window.location = window.location.protocol+'/post/' + portletID;
+  });
+}
+
+
+function getTasks() {
+  var taskApi = "/api/task/?name={{name}}";
+  $.ajax({url: taskApi, success: function(result) {
+    var taskLength = result.results.length;
+
+    for(var i = 0; i < taskLength; i++){
+      var taskName = result.results[i].title;
+      var taskStatus = result.results[i].status;
+      var taskDescription = result.results[i].description;
+      var taskID = result.results[i].id;
+console.log(taskStatus);
+      if(taskStatus == "pending" || taskStatus == "Pending Start"){
+        $('div.big-block#pending').append("<div class=portlet id="+ taskID +">" + "<div class=portlet-header>" + taskName + "</div>" + "<div class=portlet-content>" + taskDescription + "</div>" + "</div>");
+      }
+      else if (taskStatus == "progress" || taskStatus == "In Progress") {
+        $('div.big-block#progress').append("<div class=portlet id="+ taskID +">" + "<div class=portlet-header>" + taskName + "</div>" + "<div class=portlet-content>" + taskDescription + "</div>" + "</div>");
+      }
+      else if (taskStatus == "pendingreview" || taskStatus == "Pending for Review") {
+        $('div.big-block#pendingreview').append("<div class=portlet id="+ taskID +">" + "<div class=portlet-header>" + taskName + "</div>" + "<div class=portlet-content>" + taskDescription + "</div>" + "</div>");
+      }
+
+      else if (taskStatus == "feedback" || taskStatus == "Client Feedback") {
+        $('div.big-block#feedback').append("<div class=portlet id="+ taskID +">" + "<div class=portlet-header>" + taskName + "</div>" + "<div class=portlet-content>" + taskDescription + "</div>" + "</div>");
+      }
+      else if (taskStatus == "completed" || taskStatus == "Completed") {
+        $('div.big-block#completed').append("<div class=portlet id="+ taskID +">" + "<div class=portlet-header>" + taskName + "</div>" + "<div class=portlet-content>" + taskDescription + "</div>" + "</div>");
+      }
+    }
+    sortaTable();
+    portletEdit();
+    portletEdi();
+
+    }
+  });
+}
+
+$(getTasks)
+
+
+$('new_task_form').on('submit', function(event) {
+  event.preventDefault();
+  //console.log("form submitted!");
+  new_task();
+});
+
+function new_task() {
+  $.ajax({
+    url: "/api/task/",
+    type: "POST",
+    data: { new_task: $("#new_task_wrapper").val() },
+
+    success: function(json) {
+      $('#new_task_wrapper').val('');
+    }
+  });
+};
+
+// -------------Popup window for new task--------------
+
+// Get the modal
+var modal = document.getElementById('myModal');
+
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal
+btn.onclick = function() {
+    modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+
+</script>
+{% endblock %}

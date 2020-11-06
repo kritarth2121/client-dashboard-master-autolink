@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 class="mb-3">Groups </h1>
+             {% if user.is_superuser %}
+
+<article class="media content-section">
+<p class="article-content"><a href="{% url 'staff' %}">Staff</p>
+
+</article>
+
+<BR>
+{% endif %}
+ <article class="media content-section">
+ <p class="article-content"><a href="{% url 'client' %}">Clients</p>
+
+</article>
+    <BR>
+ <article class="media content-section">
+<p class="article-content"><a href="{% url 'projectall:projectlist' %}">Projects</p>
+</article>
+{% endblock content %}

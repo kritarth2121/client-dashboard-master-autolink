@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1><label for="formGroupExampleInput2"><u>Filter</u></label></h1>
+
+<form>
+<select name="list" id="list" accesskey="target">
+    <option value='none' selected>Choose a Filter</option>
+    {% for post in posts %}
+        <option value="{%url 'tags:filtername' post.title%}">{{post.title}}</option>
+
+    {% endfor %}
+
+</select>
+<input type=button value="Go" onclick="goToNewPage()" />
+</form>
+<script type="text/javascript">
+    function goToNewPage()
+    {
+        var url = document.getElementById('list').value;
+        if(url != 'none') {
+            window.location = url;
+        }
+    }
+</script>
+<button class="btn btn-light" type="button"  data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+     <span class="icon"><i class="fas fa-fw fa-file"></i></span>Create Tag
+</button>
+
+<div class="collapse" id="collapseExample">
+
+<form action="{% url 'tags:createtag' %}" >
+    <textarea rows="2" id="myText" class="form-control" name="comment" placeholder="" value=""  ></textarea>
+  <button class="btn btn-light" >Submit</button>
+  </form>
+</div>
+{% endblock content %}
